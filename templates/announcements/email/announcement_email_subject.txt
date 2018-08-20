@@ -1,0 +1,3 @@
+{% load i18n %}
+{# Translators: Wireframe ANN.05 #}
+{% trans 'Urgent Announcement from Newcastle University' %}

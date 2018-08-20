@@ -1,0 +1,11 @@
+{% load i18n %}
+{# Translators: Wireframe ANN.05 #}
+{% blocktrans %}
+Dear {{ recipient_name }},
+
+Please note an urgent announcement has been added on MyHub. To view the announcement please go to {{ hub_url }}
+
+Warmest regards,
+
+Newcastle University Team
+{% endblocktrans %}

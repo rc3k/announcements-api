@@ -1,0 +1,7 @@
+{
+  "audience": "all",
+  "subject": "subject goes here",
+  "body": "body goes here",
+  "visible_from": "2016-01-31T09:00:00.000Z",
+  "visible_to": "2016-05-31T09:00:00.000Z"
+}
