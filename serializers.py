@@ -76,4 +76,3 @@ class UserAnnouncementSerializer(serializers.Serializer):
     marked_read = serializers.DateTimeField(allow_null=True)
     modified = serializers.DateTimeField(allow_null=True, read_only=True)
     body = serializers.SerializerMethodField()
-

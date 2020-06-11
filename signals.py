@@ -45,4 +45,5 @@ def _get_email_datatuple(user, subject, body):
         [user.email]
     )
 
+
 signals.post_save.connect(send_announcement_emails, sender=Announcement)

@@ -308,20 +308,6 @@ def announcements_with_recipients(announcements):
 
 
 @pytest.mark.django_db
-def test_add_announcement_without_permission(users):
-    tyrion = users[1]
-    with pytest.raises(PermissionDenied):
-        add_announcement(AnnouncementSerializer(), tyrion)
-
-
-@pytest.mark.django_db
-def test_update_announcement_without_permission(users):
-    tyrion = users[1]
-    with pytest.raises(PermissionDenied):
-        update_announcement(AnnouncementSerializer(), tyrion)
-
-
-@pytest.mark.django_db
 def test_get_announcement(announcements):
     pk = announcements[3].pk
     announcement = get_announcement(pk)
@@ -334,27 +320,12 @@ def test_get_announcement_does_not_exist(announcements):
 
 
 @pytest.mark.django_db
-def test_delete_announcement_without_permission(announcements, users):
-    tyrion = users[1]
-    with pytest.raises(PermissionDenied):
-        delete_announcement(announcements[0], tyrion)
-
-
-@pytest.mark.django_db
 def test_get_announcement_options(programmes, programme_master_courses, master_courses, scheduled_courses, scheduled_course_groups):
-    options = get_announcement_options(programmes[0].pk, master_courses[0].pk, scheduled_courses[0].pk)
+    options = get_announcement_options(programmes[0].pk)
 
     # master courses
     mc = [master_courses[0].pk, master_courses[1].pk, master_courses[2].pk]
     assert sorted(mc) == sorted(options['master_courses'].keys())
-
-    # scheduled courses
-    sc = [scheduled_courses[0].pk, scheduled_courses[1].pk, scheduled_courses[2].pk]
-    assert sorted(sc) == sorted(options['scheduled_courses'].keys())
-
-    # scheduled course groups
-    scg = [scheduled_course_groups[0].pk, scheduled_course_groups[1].pk, scheduled_course_groups[2].pk]
-    assert sorted(scg) == sorted(options['scheduled_course_groups'].keys())
 
 
 @pytest.mark.django_db
@@ -697,10 +668,10 @@ def test_get_announcements_marked_read_for_user_when_exceeds_limit_1(users, anno
     assert len(all_announcements) == 10
 
     limit = 9
-    l = list(get_announcements_marked_read_for_user(all_announcements, tyrion, limit=limit))
-    assert len(l) == limit
+    list_items = list(get_announcements_marked_read_for_user(all_announcements, tyrion, limit=limit))
+    assert len(list_items) == limit
 
-    assert list(map(lambda d: d['id'], l)) == [
+    assert list(map(lambda d: d['id'], list_items)) == [
         announcements[0].id,  # read and not urgent
         announcements[1].id,  # read, but urgent so always included
                               # [2] is omitted as it is read, but not urgent
@@ -723,10 +694,10 @@ def test_get_announcements_marked_read_for_user_when_exceeds_limit_2(users, anno
     assert len(all_announcements) == 10
 
     limit = 1
-    l = list(get_announcements_marked_read_for_user(all_announcements, tyrion, limit=limit))
-    assert len(l) == 8  # because seven are unread and one is urgent
+    list_items = list(get_announcements_marked_read_for_user(all_announcements, tyrion, limit=limit))
+    assert len(list_items) == 8  # because seven are unread and one is urgent
 
-    assert list(map(lambda d: d['id'], l)) == [
+    assert list(map(lambda d: d['id'], list_items)) == [
         announcements[1].id,  # read, but urgent so always included
         announcements[3].id,  # unread, so always included
         announcements[4].id,  # unread, so always included
